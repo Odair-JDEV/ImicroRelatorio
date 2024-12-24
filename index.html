@@ -1,430 +1,478 @@
-<html><head><base href=".">
-    <meta charset="UTF-8">
-    <title>Sistema de Relatórios</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #f5f5f5;
+<html>
+<head>
+<base href=".">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema de Relatorios</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 80%;
+        min-width: 320px;
+        margin: 20px auto;
+        padding: 10px;
+        background-image: url('https://imicro.com.br/wp-content/uploads/2022/05/halo-001.jpg');
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;   
+    }
+
+    .summary-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .summary-box {
+        background-color: rgba(25, 118, 210, 0.95); 
+        color: white;
+        padding: 15px;
+        border-radius: 8px;
+        flex: 1 1 300px;
+        min-width: 250px;
+        text-align: center;
+    }
+
+    .summary-box h3 {
+        margin: 0;
+        margin-bottom: 10px;
+    }
+
+    .summary-box p {
+        margin: 5px 0;
+        font-size: 1.2em;
+    }
+
+    .report-container {
+    background-color: rgba(255, 255, 255, 0.822);
+    padding: 0px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+
+    .report-header {
+        font-weight: bold;
+        color: #1a237e;
+        margin-bottom: 15px;
+    }
+
+    .divider {
+        border-top: 2px dashed #ccc;
+        margin: 20px 0;
+    }
+
+    .location-section {
+        margin: 15px 5px;
+    }
+
+    .location-title {
+        font-weight: bold;
+        color: #0d47a1;
+        margin: 10px 0;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+
+    .issue-list {
+        list-style-type: none;
+        padding-left: 0px;
+    }
+
+    .issue-item {
+        margin: 5px 0;
+        color: #333;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 5px;
+        width: 100%;
+    }
+
+    .counter-controls {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        margin-left: auto;
+    }
+
+    .counter-btn {
+        background-color: #1976d2;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        width: 25px;
+        height: 25px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .counter-btn:hover {
+        background-color: #1565c0;
+    }
+
+    .counter-value {
+        min-width: 20px;
+        text-align: center;
+        margin: 0 5px;
+    }
+
+    .total {
+        font-weight: bold;
+        color: #1565c0;
+    }
+
+    #generateReport {
+        background-color: #1976d2;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+
+    #generateReport:hover {
+        background-color: #1565c0;
+    }
+
+    #dateInput {
+        padding: 8px;
+        margin-right: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .checkbox-control {
+        margin-right: 5px;
+    }
+
+    .counter-hidden {
+        display: none;
+    }
+
+    .section-hidden {
+        display: none;
+    }
+
+    .add-category-btn {
+        background-color: #1976d2;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+
+    .add-category-btn:hover {
+        background-color: #1565c0;
+    }
+
+    .copy-btn {
+        background-color: #1976d2;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+
+    .copy-btn:hover {
+        background-color: #1565c0;
+    }
+
+    .logo-container {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .logo-container img {
+        max-width: 300px;
+        height: auto;
+    }
+
+    @media screen and (max-width: 600px) {
+        .logo-container img {
+            max-width: 100%;
+            height: auto;
         }
-    
-        .summary-container {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-    
-        .summary-box {
-            background-color: #1976d2;
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            width: 48%;
-            text-align: center;
-        }
-    
-        .summary-box h3 {
-            margin: 0;
-            margin-bottom: 10px;
-        }
-    
-        .summary-box p {
-            margin: 5px 0;
-            font-size: 1.2em;
-        }
-    
-        .report-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-    
-        .report-header {
-            font-weight: bold;
-            color: #1a237e;
-            margin-bottom: 15px;
-        }
-    
-        .divider {
-            border-top: 2px dashed #ccc;
-            margin: 20px 0;
-        }
-    
-        .location-section {
-            margin: 15px 5px;
-        }
-    
-        .location-title {
-            font-weight: bold;
-            color: #0d47a1;
-            margin: 10px 0;
-            display: flex;
-            align-items: center;
-            gap: 2px;
-        }
-    
-        .issue-list {
-            list-style-type: none;
-            padding-left: 0px;
-        }
-    
-        .issue-item {
-            margin: 5px 0;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        
+        #dateInput, #generateReport, .copy-btn {
             width: 100%;
+            margin: 5px 0;
         }
-    
+        
         .counter-controls {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-            gap: 2px;
+            margin-left: 0;
+            width: 100%;
+            justify-content: flex-end;
+            margin-top: 5px;
         }
-    
-        .counter-btn {
-            background-color: #1976d2;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            width: 25px;
-            height: 25px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        
+        .issue-item {
+            padding: 5px 0;
         }
-    
-        .counter-btn:hover {
-            background-color: #1565c0;
+        
+        .location-title {
+            flex-wrap: wrap;
         }
-    
-        .counter-value {
-            min-width: 20px;
-            text-align: center;
-            margin: 0 5px;
-        }
-    
-        .total {
-            font-weight: bold;
-            color: #1565c0;
-        }
-    
-        #generateReport {
-            background-color: #1976d2;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
-    
-        #generateReport:hover {
-            background-color: #1565c0;
-        }
-    
-        #dateInput {
-            padding: 8px;
-            margin-right: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-    
-        .checkbox-control {
-            margin-right: 5px;
-        }
-    
-        .counter-hidden {
-            display: none;
-        }
-    
-        .section-hidden {
-            display: none;
-        }
-    
-        .add-category-btn {
-            background-color: #1976d2;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-            margin-left: 10px;
-        }
-    
-        .add-category-btn:hover {
-            background-color: #1565c0;
-        }
-    
-        .copy-btn {
-            background-color: #1976d2;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-    
-        .copy-btn:hover {
-            background-color: #1565c0;
-        }
-    </style>
-    </head>
-    <body>
-        <input type="date" id="dateInput">
-        <button id="generateReport">Gerar Relatório</button>
-        <button id="copyReport" class="copy-btn">Copiar Relatório</button>
-    
-        <div class="summary-container" id="summaryOutput">
-            <!-- Os resumos serão gerados aqui -->
-        </div>
-    
-        <div class="report-container" id="reportOutput">
-            <!-- O relatório de OS em aberto será gerado aqui -->
-        </div>
-    
-        <div class="report-container" id="completedReportOutput">
-            <!-- O relatório de OS realizadas será gerado aqui -->
-        </div>
-    
-    <script>
-    function createCounter(initialValue) {
-      const wrapper = document.createElement('div');
-      wrapper.style.display = 'flex';
-      wrapper.style.alignItems = 'center';
-      wrapper.style.width = '100%';
-      wrapper.style.gap = '5px';
-      const labelSpan = document.createElement('span');
-      labelSpan.className = 'labelSpan';
-      const container = document.createElement('div');
-      container.className = 'counter-controls counter-hidden';
-      container.style.marginLeft = 'auto';
-      const minusBtn = document.createElement('button');
-      minusBtn.className = 'counter-btn';
-      minusBtn.textContent = '-';
-      const value = document.createElement('span');
-      value.className = 'counter-value';
-      value.textContent = initialValue;
-      const plusBtn = document.createElement('button');
-      plusBtn.className = 'counter-btn';
-      plusBtn.textContent = '+';
-      container.appendChild(minusBtn);
-      container.appendChild(value);
-      container.appendChild(plusBtn);
-      let currentValue = initialValue;
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.className = 'checkbox-control';
-      wrapper.appendChild(checkbox);
-      wrapper.appendChild(labelSpan);
-      wrapper.appendChild(container);
-      checkbox.addEventListener('change', e => {
-        if (e.target.checked) {
-          container.classList.remove('counter-hidden');
-        } else {
-          container.classList.add('counter-hidden');
-          currentValue = 0;
-          value.textContent = currentValue;
-        }
-        updateTotals();
-      });
-      minusBtn.addEventListener('click', () => {
-        if (currentValue > 0) {
-          currentValue--;
-          value.textContent = currentValue;
-          updateTotals();
-        }
-      });
-      plusBtn.addEventListener('click', () => {
-        currentValue++;
-        value.textContent = currentValue;
-        updateTotals();
-      });
-      return {
-        wrapper,
-        labelSpan
-      };
     }
-    
-    function createLocationSection(cityName, container) {
-      const section = document.createElement('div');
-      section.className = 'location-section';
-      const titleWrapper = document.createElement('div');
-      titleWrapper.className = 'location-title';
-      const cityCheckbox = document.createElement('input');
-      cityCheckbox.type = 'checkbox';
-      cityCheckbox.checked = true;
-      cityCheckbox.addEventListener('change', e => {
-        const issueList = section.querySelector('.issue-list');
-        if (e.target.checked) {
-          issueList.classList.remove('section-hidden');
-        } else {
-          issueList.classList.add('section-hidden');
-        }
-        updateTotals();
-      });
-      titleWrapper.appendChild(cityCheckbox);
-      titleWrapper.appendChild(document.createTextNode(`TOTAL EM ${cityName}: 0`));
-      section.appendChild(titleWrapper);
-      const issueList = document.createElement('ul');
-      issueList.className = 'issue-list';
-      issueList.innerHTML = `
-            <li class="issue-item">- CONFIG.ROTEADOR: </li>
-            <li class="issue-item">- LOSS: </li>
-            <li class="issue-item">- LENTIDÃO: </li>
-            <li class="issue-item">- SEM CONEXÃO: </li>
-        `;
-      const addButton = document.createElement('button');
-      addButton.className = 'add-category-btn';
-      addButton.textContent = '+ Nova Categoria';
-      addButton.onclick = () => {
-        const newCategory = prompt('Digite o nome da nova categoria:');
-        if (newCategory) {
-          const newItem = document.createElement('li');
-          newItem.className = 'issue-item';
-          const counterElements = createCounter(0);
-          counterElements.labelSpan.textContent = `- ${newCategory}: `;
-          newItem.appendChild(counterElements.wrapper);
-          issueList.appendChild(newItem);
-          updateTotals();
-        }
-      };
-      issueList.querySelectorAll('.issue-item').forEach((item, index) => {
-        const values = [3, 7, 5, 2];
-        const counterElements = createCounter(values[index]);
-        counterElements.labelSpan.textContent = item.textContent;
-        item.textContent = '';
-        item.appendChild(counterElements.wrapper);
-      });
-      section.appendChild(issueList);
-      section.appendChild(addButton);
-      container.appendChild(section);
-      container.appendChild(document.createElement('div')).className = 'divider';
+</style>
+</head>
+<body>
+    <div class="logo-container">
+        <img src="https://imicro.com.br/wp-content/uploads/2022/06/imicro-telecom.png" alt="iMicro Telecom Logo">
+    </div>
+    <input type="date" id="dateInput">
+    <button id="generateReport">Gerar Relat&#xf3;rio</button>
+    <button id="copyReport" class="copy-btn">Copiar Relat&#xf3;rio</button>
+
+    <div class="summary-container" id="summaryOutput">
+        <!-- Os resumos serão gerados aqui -->
+    </div>
+
+    <div class="report-container" id="reportOutput">
+        <!-- O relatório de OS em aberto será gerado aqui -->
+    </div>
+
+    <div class="report-container" id="completedReportOutput">
+        <!-- O relatório de OS realizadas será gerado aqui -->
+    </div>
+
+<script>function createCounter(initialValue) {
+  const wrapper = document.createElement('div');
+  wrapper.style.display = 'flex';
+  wrapper.style.alignItems = 'center';
+  wrapper.style.width = '100%';
+  wrapper.style.gap = '5px';
+  wrapper.style.flexWrap = 'wrap';
+  const labelSpan = document.createElement('span');
+  labelSpan.className = 'labelSpan';
+  const container = document.createElement('div');
+  container.className = 'counter-controls counter-hidden';
+  container.style.marginLeft = 'auto';
+  const minusBtn = document.createElement('button');
+  minusBtn.className = 'counter-btn';
+  minusBtn.textContent = '-';
+  const value = document.createElement('span');
+  value.className = 'counter-value';
+  value.textContent = initialValue;
+  const plusBtn = document.createElement('button');
+  plusBtn.className = 'counter-btn';
+  plusBtn.textContent = '+';
+  container.appendChild(minusBtn);
+  container.appendChild(value);
+  container.appendChild(plusBtn);
+  let currentValue = initialValue;
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.className = 'checkbox-control';
+  wrapper.appendChild(checkbox);
+  wrapper.appendChild(labelSpan);
+  wrapper.appendChild(container);
+  checkbox.addEventListener('change', e => {
+    if (e.target.checked) {
+      container.classList.remove('counter-hidden');
+    } else {
+      container.classList.add('counter-hidden');
+      currentValue = 0;
+      value.textContent = currentValue;
     }
-    
-    function updateTotals() {
-      const updateSectionTotals = container => {
-        const sections = container.querySelectorAll('.location-section');
-        sections.forEach(section => {
-          const issueList = section.querySelector('.issue-list');
-          if (!issueList.classList.contains('section-hidden')) {
-            const counters = section.querySelectorAll('.counter-value');
-            const checkedCounters = Array.from(counters).filter(counter => !counter.parentElement.classList.contains('counter-hidden'));
-            const total = checkedCounters.reduce((sum, counter) => sum + parseInt(counter.textContent), 0);
-            const titleElement = section.querySelector('.location-title');
-            const cityName = titleElement.textContent.split(':')[0].replace('TOTAL EM ', '');
-            titleElement.lastChild.textContent = `TOTAL EM ${cityName}: ${total}`;
-          }
-        });
-        const visibleSections = Array.from(container.querySelectorAll('.location-section')).filter(section => !section.querySelector('.issue-list').classList.contains('section-hidden'));
-        const grandTotal = visibleSections.reduce((sum, section) => {
-          const checkedCounters = Array.from(section.querySelectorAll('.counter-value')).filter(counter => !counter.parentElement.classList.contains('counter-hidden'));
-          return sum + checkedCounters.reduce((subSum, counter) => subSum + parseInt(counter.textContent), 0);
-        }, 0);
-        const headerElement = container.querySelector('.report-header');
-        if (headerElement) {
-          const datePart = headerElement.textContent.split('SISTEMA:')[0].split('TOTAL:')[0];
-          if (headerElement.textContent.includes('SISTEMA:')) {
-            headerElement.textContent = `${datePart}SISTEMA: ${grandTotal}`;
-          } else if (headerElement.textContent.includes('TOTAL:')) {
-            headerElement.textContent = `${datePart}TOTAL: ${grandTotal}`;
-          }
-        }
-      };
-      updateSectionTotals(document.getElementById('reportOutput'));
-      updateSectionTotals(document.getElementById('completedReportOutput'));
-    }
-    
-    function generateReportText() {
-      const reportOutput = document.getElementById('reportOutput');
-      const completedReportOutput = document.getElementById('completedReportOutput');
-      const date = new Date(document.getElementById('dateInput').value);
-      date.setDate(date.getDate() + 1);
-      const formattedDate = date.toLocaleDateString('pt-BR');
-      let reportText = '';
-      function processSectionText(section) {
-        const title = section.querySelector('.location-title');
-        const cityName = title.textContent.split(':')[0].replace('TOTAL EM ', '');
-        const total = title.textContent.split(':')[1].trim();
-        if (!section.querySelector('.issue-list').classList.contains('section-hidden')) {
-          reportText += `\n*TOTAL EM ${cityName}: ${total}*\n\n`;
-          const items = section.querySelectorAll('.issue-item');
-          items.forEach(item => {
-            const checkbox = item.querySelector('input[type="checkbox"]');
-            if (checkbox && checkbox.checked) {
-              const label = item.querySelector('.labelSpan').textContent.trim();
-              const value = item.querySelector('.counter-value').textContent;
-              reportText += `${label}${value}\n`;
-            }
-          });
-          reportText += '\n' + '-'.repeat(90) + '\n';
-        }
-      }
-      const openHeader = reportOutput.querySelector('.report-header').textContent;
-      const systemTotal = openHeader.split('SISTEMA:')[1].trim();
-      reportText = `*PARCIAL DO DIA ${formattedDate} TOTAL DE O.S EM ABERTO NO SISTEMA: ${systemTotal}*\n`;
-      reportText += '-'.repeat(90) + '\n';
-      reportOutput.querySelectorAll('.location-section').forEach(processSectionText);
-      const completedHeader = completedReportOutput.querySelector('.report-header').textContent.replace(/\s+/g, ' ').trim();
-      const [datePart, totalPart] = completedHeader.split('TOTAL:');
-      const formattedCompletedHeader = `*RELATÓRIO DE O.S REALIZADAS DIA ${formattedDate} TOTAL:${totalPart}*`;
-      reportText += `\n${formattedCompletedHeader}\n`;
-      completedReportOutput.querySelectorAll('.location-section').forEach(processSectionText);
-      return reportText;
-    }
-    
-    document.getElementById('copyReport').addEventListener('click', function () {
-      const reportText = generateReportText();
-      const textarea = document.createElement('textarea');
-      textarea.value = reportText;
-      document.body.appendChild(textarea);
-      textarea.select();
-      try {
-        document.execCommand('copy');
-        alert('Relatório copiado para a área de transferência!');
-      } catch (err) {
-        console.error('Erro ao copiar:', err);
-        alert('Erro ao copiar o relatório. Por favor, tente novamente.');
-      } finally {
-        document.body.removeChild(textarea);
-      }
-    });
-    
-    document.getElementById('generateReport').addEventListener('click', function () {
-      const date = new Date(document.getElementById('dateInput').value);
-      date.setDate(date.getDate() + 1);
-      const formattedDate = date.toLocaleDateString('pt-BR');
-      const report = document.getElementById('reportOutput');
-      report.innerHTML = `
-            <div class="report-header">
-                PARCIAL DO DIA ${formattedDate}
-                TOTAL DE O.S EM ABERTO NO SISTEMA: 0
-            </div>
-            <div class="divider"></div>
-        `;
-      const completedReport = document.getElementById('completedReportOutput');
-      completedReport.innerHTML = `
-            <div class="report-header">
-                RELATÓRIO DE O.S REALIZADAS DIA ${formattedDate}
-                TOTAL: 0
-            </div>
-            <div class="divider"></div>
-        `;
-      createLocationSection('UBÁ', report);
-      createLocationSection('TOCANTINS', report);
-      createLocationSection('UBÁ', completedReport);
-      createLocationSection('TOCANTINS', completedReport);
+    updateTotals();
+  });
+  minusBtn.addEventListener('click', () => {
+    if (currentValue > 0) {
+      currentValue--;
+      value.textContent = currentValue;
       updateTotals();
+    }
+  });
+  plusBtn.addEventListener('click', () => {
+    currentValue++;
+    value.textContent = currentValue;
+    updateTotals();
+  });
+  return {
+    wrapper,
+    labelSpan
+  };
+}
+function createLocationSection(cityName, container) {
+  const section = document.createElement('div');
+  section.className = 'location-section';
+  const titleWrapper = document.createElement('div');
+  titleWrapper.className = 'location-title';
+  const cityCheckbox = document.createElement('input');
+  cityCheckbox.type = 'checkbox';
+  cityCheckbox.checked = true;
+  cityCheckbox.addEventListener('change', e => {
+    const issueList = section.querySelector('.issue-list');
+    if (e.target.checked) {
+      issueList.classList.remove('section-hidden');
+    } else {
+      issueList.classList.add('section-hidden');
+    }
+    updateTotals();
+  });
+  titleWrapper.appendChild(cityCheckbox);
+  titleWrapper.appendChild(document.createTextNode(`TOTAL EM ${cityName}: 0`));
+  section.appendChild(titleWrapper);
+  const issueList = document.createElement('ul');
+  issueList.className = 'issue-list';
+  issueList.innerHTML = `
+        <li class="issue-item">- CONFIG.ROTEADOR: </li>
+        <li class="issue-item">- LOSS: </li>
+        <li class="issue-item">- LENTIDÃO: </li>
+        <li class="issue-item">- SEM CONEXÃO: </li>
+    `;
+  const addButton = document.createElement('button');
+  addButton.className = 'add-category-btn';
+  addButton.textContent = '+ Nova Categoria';
+  addButton.onclick = () => {
+    const newCategory = prompt('Digite o nome da nova categoria:');
+    if (newCategory) {
+      const newItem = document.createElement('li');
+      newItem.className = 'issue-item';
+      const counterElements = createCounter(0);
+      counterElements.labelSpan.textContent = `- ${newCategory}: `;
+      newItem.appendChild(counterElements.wrapper);
+      issueList.appendChild(newItem);
+      updateTotals();
+    }
+  };
+  issueList.querySelectorAll('.issue-item').forEach((item, index) => {
+    const values = [3, 7, 5, 2];
+    const counterElements = createCounter(values[index]);
+    counterElements.labelSpan.textContent = item.textContent;
+    item.textContent = '';
+    item.appendChild(counterElements.wrapper);
+  });
+  section.appendChild(issueList);
+  section.appendChild(addButton);
+  container.appendChild(section);
+  container.appendChild(document.createElement('div')).className = 'divider';
+}
+function updateTotals() {
+  const updateSectionTotals = container => {
+    const sections = container.querySelectorAll('.location-section');
+    sections.forEach(section => {
+      const issueList = section.querySelector('.issue-list');
+      if (!issueList.classList.contains('section-hidden')) {
+        const counters = section.querySelectorAll('.counter-value');
+        const checkedCounters = Array.from(counters).filter(counter => !counter.parentElement.classList.contains('counter-hidden'));
+        const total = checkedCounters.reduce((sum, counter) => sum + parseInt(counter.textContent), 0);
+        const titleElement = section.querySelector('.location-title');
+        const cityName = titleElement.textContent.split(':')[0].replace('TOTAL EM ', '');
+        titleElement.lastChild.textContent = `TOTAL EM ${cityName}: ${total}`;
+      }
     });
-    </script>
-    </body></html>
-    
+    const visibleSections = Array.from(container.querySelectorAll('.location-section')).filter(section => !section.querySelector('.issue-list').classList.contains('section-hidden'));
+    const grandTotal = visibleSections.reduce((sum, section) => {
+      const checkedCounters = Array.from(section.querySelectorAll('.counter-value')).filter(counter => !counter.parentElement.classList.contains('counter-hidden'));
+      return sum + checkedCounters.reduce((subSum, counter) => subSum + parseInt(counter.textContent), 0);
+    }, 0);
+    const headerElement = container.querySelector('.report-header');
+    if (headerElement) {
+      const datePart = headerElement.textContent.split('SISTEMA:')[0].split('TOTAL:')[0];
+      if (headerElement.textContent.includes('SISTEMA:')) {
+        headerElement.textContent = `${datePart}SISTEMA: ${grandTotal}`;
+      } else if (headerElement.textContent.includes('TOTAL:')) {
+        headerElement.textContent = `${datePart}TOTAL: ${grandTotal}`;
+      }
+    }
+  };
+  updateSectionTotals(document.getElementById('reportOutput'));
+  updateSectionTotals(document.getElementById('completedReportOutput'));
+}
+function generateReportText() {
+  const reportOutput = document.getElementById('reportOutput');
+  const completedReportOutput = document.getElementById('completedReportOutput');
+  const date = new Date(document.getElementById('dateInput').value);
+  date.setDate(date.getDate() + 1);
+  const formattedDate = date.toLocaleDateString('pt-BR');
+  let reportText = '';
+  function processSectionText(section) {
+    const title = section.querySelector('.location-title');
+    const cityName = title.textContent.split(':')[0].replace('TOTAL EM ', '');
+    const total = title.textContent.split(':')[1].trim();
+    if (!section.querySelector('.issue-list').classList.contains('section-hidden')) {
+      reportText += `\n*TOTAL EM ${cityName}: ${total}*\n\n`;
+      const items = section.querySelectorAll('.issue-item');
+      items.forEach(item => {
+        const checkbox = item.querySelector('input[type="checkbox"]');
+        if (checkbox && checkbox.checked) {
+          const label = item.querySelector('.labelSpan').textContent.trim();
+          const value = item.querySelector('.counter-value').textContent;
+          reportText += `${label}${value}\n`;
+        }
+      });
+      reportText += '\n' + '-'.repeat(90) + '\n';
+    }
+  }
+  const openHeader = reportOutput.querySelector('.report-header').textContent;
+  const systemTotal = openHeader.split('SISTEMA:')[1].trim();
+  reportText = `*PARCIAL DO DIA ${formattedDate} TOTAL DE O.S EM ABERTO NO SISTEMA: ${systemTotal}*\n`;
+  reportText += '-'.repeat(90) + '\n';
+  reportOutput.querySelectorAll('.location-section').forEach(processSectionText);
+  const completedHeader = completedReportOutput.querySelector('.report-header').textContent.replace(/\s+/g, ' ').trim();
+  const [datePart, totalPart] = completedHeader.split('TOTAL:');
+  const formattedCompletedHeader = `*RELATÓRIO DE O.S REALIZADAS DIA ${formattedDate} TOTAL:${totalPart}*`;
+  reportText += `\n${formattedCompletedHeader}\n`;
+  completedReportOutput.querySelectorAll('.location-section').forEach(processSectionText);
+  return reportText;
+}
+document.getElementById('copyReport').addEventListener('click', function () {
+  const reportText = generateReportText();
+  const textarea = document.createElement('textarea');
+  textarea.value = reportText;
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    document.execCommand('copy');
+    alert('Relatório copiado para a área de transferência!');
+  } catch (err) {
+    console.error('Erro ao copiar:', err);
+    alert('Erro ao copiar o relatório. Por favor, tente novamente.');
+  } finally {
+    document.body.removeChild(textarea);
+  }
+});
+document.getElementById('generateReport').addEventListener('click', function () {
+  const date = new Date(document.getElementById('dateInput').value);
+  date.setDate(date.getDate() + 1);
+  const formattedDate = date.toLocaleDateString('pt-BR');
+  const report = document.getElementById('reportOutput');
+  report.innerHTML = `
+        <div class="report-header">
+            PARCIAL DO DIA ${formattedDate}
+            TOTAL DE O.S EM ABERTO NO SISTEMA: 0
+        </div>
+        <div class="divider"></div>
+    `;
+  const completedReport = document.getElementById('completedReportOutput');
+  completedReport.innerHTML = `
+        <div class="report-header">
+            RELATÓRIO DE O.S REALIZADAS DIA ${formattedDate}
+            TOTAL: 0
+        </div>
+        <div class="divider"></div>
+    `;
+  createLocationSection('UBÁ', report);
+  createLocationSection('TOCANTINS', report);
+  createLocationSection('UBÁ', completedReport);
+  createLocationSection('TOCANTINS', completedReport);
+  updateTotals();
+});</script>
+</body>
+</html>
