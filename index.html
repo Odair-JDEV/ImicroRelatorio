@@ -7,7 +7,7 @@
 <style>
     body {
         font-family: Arial, sans-serif;
-        max-width: 80%;
+        max-width: 95%;
         min-width: 320px;
         margin: 20px auto;
         padding: 10px;
@@ -104,7 +104,7 @@
         display: flex;
         align-items: center;
         gap: 2px;
-        margin-left: auto;
+        
     }
 
     .counter-btn {
@@ -220,9 +220,9 @@
         
         .counter-controls {
             margin-left: 0;
-            width: 100%;
             justify-content: flex-end;
             margin-top: 5px;
+            padding-right: 20px;
         }
         
         .issue-item {
@@ -259,14 +259,16 @@
   const wrapper = document.createElement('div');
   wrapper.style.display = 'flex';
   wrapper.style.alignItems = 'center';
-  wrapper.style.width = '27%';
+  wrapper.style.width = '100%';
   wrapper.style.gap = '5px';
   wrapper.style.flexWrap = 'wrap';
   const labelSpan = document.createElement('span');
   labelSpan.className = 'labelSpan';
   const container = document.createElement('div');
   container.className = 'counter-controls counter-hidden';
-  container.style.marginLeft = 'auto';
+  container.style.position = 'relative';
+  container.style.top = '0px';
+  container.style.left = '0px'; 
   const minusBtn = document.createElement('button');
   minusBtn.className = 'counter-btn';
   minusBtn.textContent = '-';
@@ -422,7 +424,7 @@ function generateReportText() {
           reportText += `${label}${value}\n`;
         }
       });
-      reportText += '\n' + '-'.repeat(90) + '\n';
+      reportText += '\n' + '-'.repeat(65) + '\n';
     }
   }
   const openHeader = reportOutput.querySelector('.report-header').textContent;
