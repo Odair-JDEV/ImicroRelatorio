@@ -361,7 +361,7 @@ function createLocationSection(cityName, container) {
     }
   };
   issueList.querySelectorAll('.issue-item').forEach((item, index) => {
-    const values = [3, 7, 5, 2];
+    const values = [0, 0, 0, 0 ,0 ,0];
     const counterElements = createCounter(values[index]);
     counterElements.labelSpan.textContent = item.textContent;
     item.textContent = '';
